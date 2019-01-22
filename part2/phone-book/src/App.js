@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'
+import personService from './services/persons'
 
 const Filter = ({ personsFilter, handleFilterChange }) => {
   return (
@@ -36,10 +36,13 @@ const PersonForm = ({ addPerson, name, handleNameChange, number, handleNumberCha
   )
 }
 
-const Persons = ({ persons }) => {
+const Persons = ({ persons, removePerson }) => {
   const rows = () =>
     persons.map(person =>
-      <div key={person.id}>{person.name} {person.number}</div>
+      <div key={person.id}>
+        {person.name} {person.number}
+        <button onClick={() => removePerson(person.id)}>poista</button>
+      </div>
     )
 
   return (
@@ -53,14 +56,13 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ personsFilter, setNewFilter ] = useState('')
 
-  const hook = () => {
-    axios
-      .get('http://localhost:4200/persons')
-      .then((response) => {
-        setPersons(response.data)
-      })
+  const getPersons = () => {
+    personService.getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
+    })
   }
-  useEffect(hook, [])
+  useEffect(getPersons, [])
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -77,20 +79,47 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
 
-    if (persons.find( person => person.name === newName )) {
-      alert(`${newName} on jo olemassa`)
+    const lowerCaseName = newName.toLowerCase()
+    const existingPerson = persons.find( person => 
+      person.name.toLowerCase() === lowerCaseName 
+    )
+
+    if (existingPerson) {
+      if (window.confirm(`${newName} on jo olemassa. Korvataanko vanha numero uudella?`)) {
+        const changedPerson = {...existingPerson, number: newNumber}
+        personService.update(changedPerson.id, changedPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(person =>
+              person.id !== returnedPerson.id ? person : returnedPerson
+            ))
+            setNewName('')
+            setNewNumber('')
+          })
+      }
       return
     }
 
-    const nameObject = {
+    const personObject = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1,
     }
 
-    setPersons(persons.concat(nameObject))
-    setNewName('')
-    setNewNumber('')
+    personService.create(personObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        setNewName('')
+        setNewNumber('')
+      })
+  }
+
+  const removePerson = id => {
+    const person = persons.find(p => p.id === id)
+    if (window.confirm(`Poistetaanko ${person.name}?`)) {
+      personService.remove(id)
+        .then(() => {
+          setPersons(persons.filter(p => p.id !== id))
+        })
+    }
   }
 
   const filterPersonsToShow = () => {
@@ -118,7 +147,7 @@ const App = () => {
       />
 
       <h2>Numerot</h2>
-      <Persons persons={filterPersonsToShow()} />
+      <Persons persons={filterPersonsToShow()} removePerson={removePerson} />
     </>
   )
 }
