@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 const Filter = ({ personsFilter, handleFilterChange }) => {
   return (
@@ -55,6 +56,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ personsFilter, setNewFilter ] = useState('')
+  const [ message, setMessage ] = useState()
 
   const getPersons = () => {
     personService.getAll()
@@ -94,6 +96,22 @@ const App = () => {
             ))
             setNewName('')
             setNewNumber('')
+            setMessage({
+              text: `Muokattiin ${returnedPerson.name}`,
+              type: 'success',
+            })
+            setTimeout(() => {
+              setMessage({})
+            }, 5000)
+          })
+          .catch(error => {
+            setMessage({
+              text: `Henkilö ${existingPerson.name} oli jo poistettu`,
+              type: 'error',
+            })
+            setTimeout(() => {
+              setMessage({})
+            }, 5000)
           })
       }
       return
@@ -109,6 +127,13 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNumber('')
+        setMessage({
+          text: `Lisättiin ${returnedPerson.name}`,
+          type: 'success',
+        })
+        setTimeout(() => {
+          setMessage({})
+        }, 5000)
       })
   }
 
@@ -118,6 +143,13 @@ const App = () => {
       personService.remove(id)
         .then(() => {
           setPersons(persons.filter(p => p.id !== id))
+          setMessage({
+            text: `Poistettiin ${person.name}`,
+            type: 'success',
+          })
+          setTimeout(() => {
+            setMessage({})
+          }, 5000)
         })
     }
   }
@@ -134,6 +166,8 @@ const App = () => {
   return (
     <>
       <h1>Puhelinluettelo</h1>
+
+      <Notification message={message} />
 
       <Filter personsFilter={personsFilter} handleFilterChange={handleFilterChange} />
 

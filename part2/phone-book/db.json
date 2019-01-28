@@ -1,24 +1,3 @@
 {
-  "persons": [
-    {
-      "name": "Martti Tienari",
-      "number": "12345",
-      "id": 2
-    },
-    {
-      "name": "Arto Järvinen",
-      "number": "040-123456",
-      "id": 3
-    },
-    {
-      "name": "asd foo",
-      "number": "9754",
-      "id": 4
-    },
-    {
-      "name": "arto hellas",
-      "number": "23598987",
-      "id": 5
-    }
-  ]
+  "persons": []
 }
