@@ -135,6 +135,15 @@ const App = () => {
           setMessage({})
         }, 5000)
       })
+      .catch(error => {
+        setMessage({
+          text: error.response.data.error,
+          type: 'error',
+        })
+        setTimeout(() => {
+          setMessage({})
+        }, 5000)
+      })
   }
 
   const removePerson = id => {
