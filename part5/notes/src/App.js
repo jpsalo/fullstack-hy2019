@@ -7,6 +7,8 @@ import NoteForm from './components/NoteForm'
 import Togglable from './components/Togglable'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
+// import Counter from './components/Counter'
+import BoilerplateForm from './components/BoilerplateForm'
 
 const App = () => {
   const noteFormRef = React.createRef()
@@ -161,6 +163,8 @@ const App = () => {
       <ul>
         {rows()}
       </ul>
+
+      <BoilerplateForm />
 
       <Footer />
     </>
