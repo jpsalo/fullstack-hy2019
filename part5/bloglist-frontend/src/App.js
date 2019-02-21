@@ -133,7 +133,7 @@ const App = () => {
   }
 
   const loginForm = () => (
-    <>
+    <div className="login">
       <h2>log in to application</h2>
 
       <Notification message={message} />
@@ -159,7 +159,7 @@ const App = () => {
         </div>
         <button type="submit">kirjaudu</button>
       </form>
-    </>
+    </div>
   )
 
   const heading = () => (
@@ -175,17 +175,19 @@ const App = () => {
 
   const blogsList = () => {
     return (
-      blogs.map(blog => {
-        return (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            like={() => likeBlog(blog.id)}
-            isRemovable={blog.user.id === user.id}
-            removeBlog={() => removeBlog(blog.id)}
-          />
-        )
-      })
+      <div className="blogs">
+        {blogs.map(blog => {
+          return (
+            <Blog
+              key={blog.id}
+              blog={blog}
+              like={() => likeBlog(blog.id)}
+              isRemovable={blog.user.id === user.id}
+              removeBlog={() => removeBlog(blog.id)}
+            />
+          )
+        })}
+      </div>
     )
   }
 
