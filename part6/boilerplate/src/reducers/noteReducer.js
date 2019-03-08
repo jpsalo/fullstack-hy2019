@@ -1,4 +1,17 @@
-const noteReducer = (state = [], action) => {
+const initialState = [
+  {
+    content: 'reduxin storen toiminnan määrittelee reduceri',
+    important: true,
+    id: 1,
+  },
+  {
+    content: 'storen tilassa voi olla mielivaltaista dataa',
+    important: false,
+    id: 2,
+  },
+]
+
+const noteReducer = (state = initialState, action) => {
   switch(action.type) {
     case 'NEW_NOTE':
       return [...state, action.data]

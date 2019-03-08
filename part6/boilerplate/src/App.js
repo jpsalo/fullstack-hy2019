@@ -1,6 +1,7 @@
 import React from 'react';
 import NewNote from './components/NewNote'
 import Notes from './components/Notes'
+import VisibilityFilter from './components/VisibilityFilter'
 
 // const counterReducer = (state = 0, action) => {
 //   switch (action.type) {
@@ -18,30 +19,13 @@ import Notes from './components/Notes'
 // const store = createStore(counterReducer)
 
 const App = (props) => {
+  const store = props.store
+
   return (
     <>
-      <NewNote store={props.store} />
-      <Notes store={props.store} />
-    {/*
-      <div>
-        {store.getState()}
-      </div>
-      <button
-        onClick={e => store.dispatch({ type: 'INCREMENT' })}
-      >
-        plus
-      </button>
-      <button
-        onClick={e => store.dispatch({ type: 'DECREMENT' })}
-      >
-        minus
-      </button>
-      <button
-        onClick={e => store.dispatch({ type: 'ZERO' })}
-      >
-        zero
-      </button>
-      */}
+      <NewNote store={store} />
+      <VisibilityFilter store={store} />
+      <Notes store={store} />
     </>
   )
 }

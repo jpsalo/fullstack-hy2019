@@ -1,5 +1,7 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
+import { messageChange } from '../reducers/messageReducer'
 
 const Anecdote = ({ anecdote, handleClick }) => {
   return (
@@ -15,21 +17,54 @@ const Anecdote = ({ anecdote, handleClick }) => {
   )
 }
 
-const AnecdoteList = ({ store }) => {
-  const anecdotes = store.getState()
-  const sortedAnecdotes = anecdotes.sort((a, b) => b.votes - a.votes)
+const AnecdoteList = (props) => {
+
+  const vote = (id) => {
+    props.voteAnecdote(id)
+    const votedAnectode = props.anecdotesToShow.find(a => a.id === id)
+
+    props.messageChange(`You voted '${votedAnectode.content}'`)
+
+    setTimeout(() => {
+      props.messageChange(null)
+    }, 5000)
+  }
 
   return (
-    sortedAnecdotes.map(anecdote =>
+    props.anecdotesToShow.map(anecdote =>
       <Anecdote
         key={anecdote.id}
         anecdote={anecdote}
-        handleClick={() =>
-          store.dispatch(voteAnecdote(anecdote.id))
-        }
+        handleClick={() => vote(anecdote.id)}
       />
     )
   )
 }
 
-export default AnecdoteList
+const anecdotesToShow = ({ filter, anecdotes }) => {
+  let filteredAnecdotes
+  if ( filter === '' ) {
+    filteredAnecdotes = anecdotes
+  } else {
+    const stringToCompare = filter.toLowerCase()
+    filteredAnecdotes = anecdotes.filter(a => a.content.toLowerCase().includes(stringToCompare))
+  }
+
+  return filteredAnecdotes.sort((a, b) => b.votes - a.votes)
+}
+
+const mapStateToProps = (state) => {
+  return {
+    anecdotesToShow: anecdotesToShow(state),
+  }
+}
+
+const mapDispatchToProps = {
+  voteAnecdote,
+  messageChange,
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AnecdoteList)
