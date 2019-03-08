@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
-import { messageChange } from '../reducers/messageReducer'
+import { setNotification } from '../reducers/messageReducer'
 
 const Anecdote = ({ anecdote, handleClick }) => {
   return (
@@ -21,13 +21,8 @@ const AnecdoteList = (props) => {
 
   const vote = (id) => {
     props.voteAnecdote(id)
-    const votedAnectode = props.anecdotesToShow.find(a => a.id === id)
-
-    props.messageChange(`You voted '${votedAnectode.content}'`)
-
-    setTimeout(() => {
-      props.messageChange(null)
-    }, 5000)
+    const votedAnecdote = props.anecdotesToShow.find(a => a.id === id)
+    props.setNotification(`you voted '${votedAnecdote.content}'`, 10)
   }
 
   return (
@@ -61,7 +56,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   voteAnecdote,
-  messageChange,
+  setNotification,
 }
 
 export default connect(

@@ -1,33 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 import NewNote from './components/NewNote'
 import Notes from './components/Notes'
 import VisibilityFilter from './components/VisibilityFilter'
-
-// const counterReducer = (state = 0, action) => {
-//   switch (action.type) {
-//     case 'INCREMENT':
-//       return state + 1
-//     case 'DECREMENT':
-//       return state - 1
-//     case 'ZERO':
-//       return 0
-//     default:
-//       return state
-//   }
-// }
-
-// const store = createStore(counterReducer)
+import { initializeNotes } from './reducers/noteReducer'
 
 const App = (props) => {
-  const store = props.store
+  useEffect(() => {
+    props.initializeNotes()
+  }, [])
 
   return (
     <>
-      <NewNote store={store} />
-      <VisibilityFilter store={store} />
-      <Notes store={store} />
+      <NewNote />
+      <VisibilityFilter />
+      <Notes />
     </>
   )
 }
 
-export default App
+export default connect(null, { initializeNotes })(App)

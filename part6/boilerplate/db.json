@@ -1,0 +1,54 @@
+{
+  "notes": [
+    {
+      "content": "reduxin storen toiminnan määrittelee reduceri",
+      "important": true,
+      "id": 1
+    },
+    {
+      "content": "storen tilassa voi olla mielivaltaista dataa",
+      "important": false,
+      "id": 2
+    },
+    {
+      "content": "asd",
+      "important": false,
+      "id": 3
+    },
+    {
+      "content": "sss",
+      "important": false,
+      "id": 4
+    },
+    {
+      "content": "we",
+      "important": false,
+      "id": 5
+    },
+    {
+      "content": "wer",
+      "important": false,
+      "id": 6
+    },
+    {
+      "content": "dfgdfg",
+      "important": false,
+      "id": 7
+    },
+    {
+      "content": "xcvxcv",
+      "important": false,
+      "id": 8
+    },
+    {
+      "content": "xcvxc",
+      "important": false,
+      "id": 9
+    },
+    {
+      "content": "vcxlkb",
+      "important": false,
+      "id": 10
+    }
+  ]
+}

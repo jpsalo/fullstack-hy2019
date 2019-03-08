@@ -9,10 +9,18 @@ const messageReducer = (state = initialState, action) => {
   }
 }
 
-export const messageChange = message => {
-  return {
-    type: 'SET_MESSAGE',
-    message,
+export const setNotification = (message, seconds) => {
+  return dispatch => {
+    dispatch({
+      type: 'SET_MESSAGE',
+      message,
+    })
+    setTimeout(() => {
+      dispatch({
+        type: 'SET_MESSAGE',
+        message: null,
+      })
+    }, seconds * 1000)
   }
 }
 
